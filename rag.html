@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG Simulator</title>
+<style>
+body { font-family: Arial, sans-serif; background:#0f172a; color:#e2e8f0; margin:0; }
+.container { max-width:1100px; margin:auto; padding:20px; }
+.card { background:#1e293b; padding:16px; border-radius:12px; margin-bottom:16px; }
+textarea, input { width:100%; padding:10px; border-radius:8px; border:none; margin-top:8px; }
+button { padding:10px 14px; border:none; border-radius:8px; background:#3b82f6; color:white; cursor:pointer; margin-top:10px; }
+button:hover { background:#2563eb; }
+.step { margin-bottom:12px; }
+.output { background:#020617; padding:10px; border-radius:8px; font-size:14px; }
+.highlight { color:#22c55e; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>RAG Simulator</h1>
+
+<div class="card">
+<h2>1. Input Data</h2>
+<textarea id="dataInput" rows="4" placeholder="Paste your knowledge base text..."></textarea>
+<button onclick="chunkData()">Chunk Data</button>
+<div id="chunks" class="output"></div>
+</div>
+
+<div class="card">
+<h2>2. Embedding (Simulated)</h2>
+<button onclick="embedChunks()">Convert to Vectors</button>
+<div id="vectors" class="output"></div>
+</div>
+
+<div class="card">
+<h2>3. Query</h2>
+<input id="queryInput" placeholder="Ask a question..." />
+<button onclick="search()">Retrieve Relevant Chunks</button>
+<div id="results" class="output"></div>
+</div>
+
+<div class="card">
+<h2>4. LLM Response</h2>
+<button onclick="generateAnswer()">Generate Answer</button>
+<div id="answer" class="output"></div>
+</div>
+
+</div>
+
+<script>
+let chunks = [];
+let vectors = [];
+let retrieved = [];
+
+function chunkData() {
+  const text = document.getElementById("dataInput").value;
+  chunks = text.split('.').map(c => c.trim()).filter(c => c);
+  document.getElementById("chunks").innerHTML = chunks.map(c => `• ${c}`).join('<br>');
+}
+
+function fakeEmbedding(text) {
+  return text.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+}
+
+function embedChunks() {
+  vectors = chunks.map(c => ({ text:c, value:fakeEmbedding(c) }));
+  document.getElementById("vectors").innerHTML = vectors.map(v => `${v.text} → <span class='highlight'>${v.value}</span>`).join('<br>');
+}
+
+function search() {
+  const query = document.getElementById("queryInput").value;
+  const queryVec = fakeEmbedding(query);
+
+  retrieved = vectors
+    .map(v => ({...v, score: Math.abs(v.value - queryVec)}))
+    .sort((a,b) => a.score - b.score)
+    .slice(0,2);
+
+  document.getElementById("results").innerHTML = retrieved.map(r => `✔ ${r.text} (score: ${r.score})`).join('<br>');
+}
+
+function generateAnswer() {
+  if(retrieved.length === 0) return;
+  const context = retrieved.map(r => r.text).join('. ');
+  const query = document.getElementById("queryInput").value;
+
+  const answer = `Based on context: ${context} \n\nAnswer: ${context.includes(query.split(' ')[0]) ? context : 'Not enough info, but this is simulated.'}`;
+
+  document.getElementById("answer").innerText = answer;
+}
+</script>
+</body>
+</html>
