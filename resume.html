@@ -1,0 +1,172 @@
+from textwrap import dedent
+
+html = dedent("""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Futuristic Resume - Aashish</title>
+<style>
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:linear-gradient(135deg,#0f172a,#020617);
+color:white;
+}
+.container{
+max-width:1200px;
+margin:auto;
+padding:30px;
+}
+.glass{
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(10px);
+border-radius:20px;
+padding:20px;
+margin-bottom:20px;
+box-shadow:0 0 20px rgba(0,255,255,.2);
+}
+h1{
+font-size:48px;
+margin-bottom:0;
+}
+.subtitle{
+color:#7dd3fc;
+}
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+.skill{
+margin:10px 0;
+}
+.bar{
+height:10px;
+background:#1e293b;
+border-radius:10px;
+overflow:hidden;
+}
+.fill{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#06b6d4,#3b82f6);
+transition:2s;
+}
+.timeline{
+border-left:3px solid #06b6d4;
+padding-left:15px;
+}
+.card:hover{
+transform:translateY(-5px);
+transition:.3s;
+}
+button{
+padding:10px 18px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+background:#06b6d4;
+color:white;
+}
+@media(max-width:768px){
+.grid{
+grid-template-columns:1fr;
+}
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<div class="glass">
+<h1>Aashish</h1>
+<p class="subtitle">Program Manager | Strategy Consultant | AI & Analytics Leader</p>
+<p>Management consulting, program management, analytics, AI automation, supply chain, banking, automotive and technology transformation.</p>
+<button onclick="window.print()">Download Resume (PDF)</button>
+</div>
+
+<div class="grid">
+
+<div class="glass card">
+<h2>Skills</h2>
+
+<div class="skill">Program Management
+<div class="bar"><div class="fill" data-width="95"></div></div>
+</div>
+
+<div class="skill">Data Analytics
+<div class="bar"><div class="fill" data-width="90"></div></div>
+</div>
+
+<div class="skill">AI & Automation
+<div class="bar"><div class="fill" data-width="88"></div></div>
+</div>
+
+<div class="skill">Power BI / SQL / AWS / Snowflake
+<div class="bar"><div class="fill" data-width="92"></div></div>
+</div>
+
+<div class="skill">Agile / Scrum
+<div class="bar"><div class="fill" data-width="90"></div></div>
+</div>
+
+</div>
+
+<div class="glass card">
+<h2>Certifications</h2>
+<ul>
+<li>IBM Data Science Professional Certificate</li>
+<li>Agile / Scrum Experience</li>
+<li>AI & Automation Exposure</li>
+</ul>
+</div>
+
+</div>
+
+<div class="glass card">
+<h2>Experience Timeline</h2>
+<div class="timeline">
+<p><b>Program Manager – Organizational Analytics & Automation</b><br>
+Built dashboards, automated workflows, improved operational efficiency.</p>
+
+<p><b>Program Manager – Supply Chain & SKU Optimization</b><br>
+Reduced complexity and supported transformation initiatives.</p>
+
+<p><b>Management Consulting Engagements</b><br>
+Banking, automotive, aerospace and manufacturing programs.</p>
+
+<p><b>AI & Data Transformation</b><br>
+Azure AI, analytics solutions and process automation.</p>
+</div>
+</div>
+
+<div class="glass card">
+<h2>Key Achievements</h2>
+<ul>
+<li>Reduced cycle time by 15%</li>
+<li>Built automated data pipelines and dashboards</li>
+<li>Led cross-functional teams and vendors</li>
+<li>Implemented risk and process optimization initiatives</li>
+</ul>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll(".fill").forEach(e=>{
+setTimeout(()=>{
+e.style.width=e.dataset.width+"%";
+},500);
+});
+</script>
+</body>
+</html>
+""")
+
+with open("/mnt/data/futuristic_resume.html","w",encoding="utf-8") as f:
+    f.write(html)
+
+print("Created futuristic_resume.html")
